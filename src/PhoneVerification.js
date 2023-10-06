@@ -9,8 +9,9 @@ function PhoneVerification() {
     const [verificationId, setVerificationId] = useState('');
     const [verificationError, setVerificationError] = useState(null);
 
-    const handleSendCode = async () => {
-        try {
+    const onCaptchVerify=async()=>{
+        if(!window.recaptchaVerifier){
+            
             window.recaptchaVerifier = new RecaptchaVerifier(auth, 'sign-in-button', {
                 'size': 'invisible',
                 'callback': (response) => {
@@ -18,6 +19,11 @@ function PhoneVerification() {
                     console.log(response);
                 }
             });
+        }
+    }
+    const handleSendCode = async () => {
+        try {
+            onCaptchVerify()
             const appVerifier = window.recaptchaVerifier;
             signInWithPhoneNumber(auth, phoneNumber, appVerifier)
                 .then((confirmationResult) => {
@@ -30,15 +36,13 @@ function PhoneVerification() {
                 }).catch((error) => {
                     // Error; SMS not sent
                     // ...
-
-                    console.log('handleSendCode');
+                    window.recaptchaVerifier.clear()
                     console.log(error);
                     setVerificationError(error);
                 });
         } catch (error) {
             console.error('Error sending verification code:', error);
             setVerificationError(error);
-            console.log('handleSendCode2');
         }
     };
 
@@ -71,7 +75,7 @@ function PhoneVerification() {
                 value={phoneNumber}
                 onChange={(e) => setPhoneNumber(e.target.value)}
             />
-            <p id='sign-in-button'></p>
+            <div id='sign-in-button'></div>
             <button  onClick={handleSendCode}>Send Verification Code</button>
             {verificationId && (
                 <>
