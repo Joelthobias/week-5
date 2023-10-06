@@ -1,11 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import App from './App';
+import PhoneVerification from './PhoneVerification';
+import PincodeLookup from './pincodeLookUp'; 
+import {
+  createBrowserRouter,
+  RouterProvider,
+} from "react-router-dom";
 
+const router = createBrowserRouter([
+  {
+    path: "/",
+    element: <div>Hello world!</div>,
+  }, {
+    path: "/phone",
+    element: <PhoneVerification />,
+  }, {
+    path: "/pincode",
+    element: <PincodeLookup />,
+  },
+]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <React.StrictMode>
-    <App />
+    <RouterProvider router={router} />
   </React.StrictMode>
 );
 
