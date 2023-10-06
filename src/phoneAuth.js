@@ -4,12 +4,13 @@ import { getAuth, signInWithPhoneNumber, PhoneAuthProvider, RecaptchaVerifier } 
 
 // Initialize Firebase app
 const firebaseConfig = {
-    apiKey: "AIzaSyDZ7b_XfKetC3C53dx0QASIXEYvsNqVzG8",
-    authDomain: "week52023.firebaseapp.com",
-    projectId: "week52023",
-    storageBucket: "week52023.appspot.com",
-    messagingSenderId: "722903350049",
-    appId: "1:722903350049:web:77d8a8a0dbda8f394c9c60"
+    apiKey: "AIzaSyBUiYMepBrzq2v6vXn_IzIeAtIwU0Ed9dQ",
+    authDomain: "otp-react-8bb9a.firebaseapp.com",
+    projectId: "otp-react-8bb9a",
+    storageBucket: "otp-react-8bb9a.appspot.com",
+    messagingSenderId: "632365790768",
+    appId: "1:632365790768:web:2b39f378c57bf401125ff5",
+    measurementId: "G-X8SC9X519H"
 };
 
 const app = initializeApp(firebaseConfig);

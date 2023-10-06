@@ -1,12 +1,16 @@
 // src/PhoneVerification.js
 import React, { useState } from 'react';
-import {  RecaptchaVerifier, signInWithPhoneNumber, PhoneAuthProvider, signInWithCredential } from "firebase/auth";
+import {  RecaptchaVerifier, signInWithPhoneNumber} from "firebase/auth";
 import auth from './firebase.js'
+import PhoneInput from 'react-phone-input-2'
+import 'react-phone-input-2/lib/style.css'
+import OtpInput from 'react-otp-input';
 
 function PhoneVerification() {
     const [phoneNumber, setPhoneNumber] = useState('');
     const [verificationCode, setVerificationCode] = useState('');
     const [verificationId, setVerificationId] = useState('');
+    const [sucess, setSucess] = useState('');
     const [verificationError, setVerificationError] = useState(null);
 
     const onCaptchVerify=async()=>{
@@ -25,7 +29,8 @@ function PhoneVerification() {
         try {
             onCaptchVerify()
             const appVerifier = window.recaptchaVerifier;
-            signInWithPhoneNumber(auth, phoneNumber, appVerifier)
+            let newPhone='+'+phoneNumber
+            signInWithPhoneNumber(auth, newPhone, appVerifier)
                 .then((confirmationResult) => {
                     // SMS sent. Prompt user to type the code from the message, then sign the
                     // user in with confirmationResult.confirm(code).
@@ -48,12 +53,14 @@ function PhoneVerification() {
 
     const handleVerifyCode = async () => {
         try {
-            window.confirmationResult.confirm(verificationCode).then((result) => {
+            window.confirmationResult.confirm(verificationCode).then(async(result) => {
                 // User signed in successfully.
-                var credential = PhoneAuthProvider.credential(window.confirmationResult.verificationId, verificationCode);
-                signInWithCredential(credential);
+                                
                 const user = result.user;
-                console.log(user);
+                if(user){
+                    console.log(user);
+                    setSucess('Sucess')
+                }
                 // ...
             }).catch((error) => {
                 // User couldn't sign in (bad verification code?)
@@ -69,25 +76,30 @@ function PhoneVerification() {
     return (
         <div>
             <h2>Phone Number Verification</h2>
-            <input
-                type="tel"
-                placeholder="Enter your phone number"
-                value={phoneNumber}
-                onChange={(e) => setPhoneNumber(e.target.value)}
-            />
-            <div id='sign-in-button'></div>
-            <button  onClick={handleSendCode}>Send Verification Code</button>
+            {!verificationId&&( 
+                <div>
+                    <PhoneInput
+                        country={'in'}
+                        value={phoneNumber}
+                        onChange={(value) => setPhoneNumber(value)}
+                    />
+                    <div id='sign-in-button'></div>
+                    <button  onClick={handleSendCode}>Send Verification Code</button>
+                </div>
+            )}
             {verificationId && (
                 <>
-                    <input
-                        type="text"
-                        placeholder="Enter verification code"
+                    <OtpInput
+                        onChange={(value) => setVerificationCode(value)}
                         value={verificationCode}
-                        onChange={(e) => setVerificationCode(e.target.value)}
+                        numInputs={6}
+                        renderSeparator={<span>-</span>}
+                        renderInput={(props) => <input {...props} />}
                     />
                     <button onClick={handleVerifyCode}>Verify Code</button>
                 </>
             )}
+            {sucess && <p className="Sucess-p">Mobile Number Verified</p>}
             <div id="recaptcha-container"></div>
             {verificationError && <p className="error-message">{verificationError.message}</p>}
         </div>
