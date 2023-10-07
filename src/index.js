@@ -2,6 +2,8 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import PhoneVerification from './PhoneVerification';
 import PincodeLookup from './pincodeLookUp'; 
+import EmailVerification from './emailverification';
+import Home from './home'; 
 import {
   createBrowserRouter,
   RouterProvider,
@@ -10,13 +12,16 @@ import {
 const router = createBrowserRouter([
   {
     path: "/",
-    element: <div>Hello world!</div>,
+    element: <Home/>,
   }, {
     path: "/phone",
     element: <PhoneVerification />,
   }, {
     path: "/pincode",
     element: <PincodeLookup />,
+  }, {
+    path: "/email",
+    element: <EmailVerification />,
   },
 ]);
 const root = ReactDOM.createRoot(document.getElementById('root'));
