@@ -49,10 +49,11 @@ function EmailVerification() {
             
             await mailSender(email,code);
             console.log(otp);
-
+            
         } catch (error) {
             console.error('Error sending verification code:', error);
             setVerificationError(error);
+            
         }
     };
 
@@ -61,9 +62,11 @@ function EmailVerification() {
             if (verificationCode === otp) {
                 setSucess("Email verification Completed");
                 console.log(sucess);
+                
             } else {
                 console.log(otp + ' : ' + verificationCode);
                 setVerificationError("Invalid OTP");
+                
             }
         } catch (error) {
             console.error('Error verifying code:', error);
